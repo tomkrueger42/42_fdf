@@ -1,21 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   project.h                                          :+:      :+:    :+:   */
+/*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjensen <tjensen@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/27 21:27:45 by tjensen           #+#    #+#             */
-/*   Updated: 2021/10/28 14:59:24 by tjensen          ###   ########.fr       */
+/*   Created: 2021/10/27 21:27:45 by tkruger           #+#    #+#             */
+/*   Updated: 2022/01/06 22:23:55 by tkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROJECT_H
-# define PROJECT_H
+#ifndef FDF_H
+# define FDF_H
 
+# include <mlx.h>
+# include <stdio.h>
 # include <unistd.h>
+# include <stdlib.h>
 
-# include "libft.h"
+typedef struct	s_vars
+{
+	void	*mlx;
+	void	*win;
+}				t_vars;
+
+typedef struct	s_data
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}			t_data;
 
 /* ************************************************************************** */
 /* FUNCTION PROTOTYPES														  */
