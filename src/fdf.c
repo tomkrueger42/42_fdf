@@ -6,7 +6,7 @@
 /*   By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:22:15 by tkruger           #+#    #+#             */
-/*   Updated: 2022/01/10 00:27:34 by tkruger          ###   ########.fr       */
+/*   Updated: 2022/01/19 20:47:07 by tkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(__unused int argc, __unused char **argv)
 		input_str = get_next_line(fd);
 		length++;
 		printf("%i:\t%s", length, input_str);
+		//free(input_str);
 	}
-	free(input_str);
 	return (0);
 }

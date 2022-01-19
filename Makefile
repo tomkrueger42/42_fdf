@@ -6,7 +6,7 @@
 #    By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/27 22:03:08 by tjensen           #+#    #+#              #
-#    Updated: 2022/01/10 00:30:49 by tkruger          ###   ########.fr        #
+#    Updated: 2022/01/19 20:09:00 by tkruger          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ GG		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror
 SRC		=	src/fdf.c
 LIBFT	=	-L./lib/libft -lft lib/libft/libft.a
-MINILIBX =	-Lmlx -lmlx -framework OpenGL -framework AppKit mlx/libmlx.a
+# MINILIBX =	-Lmlx -lmlx -framework OpenGL -framework AppKit mlx/libmlx.a
 
 all: $(NAME)
 
@@ -24,7 +24,7 @@ $(NAME): libmake
 
 libmake:
 	@make -C lib/libft/
-	@make -C mlx/
+#	@make -C mlx/
 
 clean:
 	@rm -f *.o *~
