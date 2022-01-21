@@ -6,14 +6,14 @@
 #    By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/27 22:03:08 by tjensen           #+#    #+#              #
-#    Updated: 2022/01/19 20:09:00 by tkruger          ###   ########.fr        #
+#    Updated: 2022/01/21 22:31:16 by tkruger          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	fdf
 GG		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror
-SRC		=	src/fdf.c
+SRC		=	src/fdf.c src/image.c
 LIBFT	=	-L./lib/libft -lft lib/libft/libft.a
 # MINILIBX =	-Lmlx -lmlx -framework OpenGL -framework AppKit mlx/libmlx.a
 
@@ -24,7 +24,9 @@ $(NAME): libmake
 
 libmake:
 	@make -C lib/libft/
+	@make -C lib/libft/ clean
 #	@make -C mlx/
+#	@make -C mlx/ clean
 
 clean:
 	@rm -f *.o *~
@@ -38,6 +40,9 @@ fclean: clean
 
 re: fclean all
 
-dbg: fclean
-	$(CC) $(CFLAGS) -g $(SRC) $(MINILIBX) -o $(NAME)
-	lldb fdf
+dbg: fclean libmake
+	$(CC) $(CFLAGS) -g $(SRC) $(LIBFT) -o $(NAME)
+	lldb fdf fdf.txt
+
+asan: fclean libmake
+	$(CC) $(CFLAGS) -fsanitize=address $(SRC) $(LIBFT) -o $(NAME)

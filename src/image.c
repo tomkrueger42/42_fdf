@@ -1,25 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   image.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/01/21 19:55:40 by tkruger          ###   ########.fr       */
+/*   Created: 2022/01/21 22:30:50 by tkruger           #+#    #+#             */
+/*   Updated: 2022/01/21 22:31:04 by tkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#include "../inc/fdf.h"
 
-# include <mlx.h>
-# include "../lib/libft/includes/libft.h"
-
-# include <stdio.h>
-
-int		main(int argc, char **argv);
-void	*make_map(struct s_list *map, char *file);
-
-
-#endif

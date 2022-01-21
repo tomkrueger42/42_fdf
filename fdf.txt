@@ -1,14 +1,4 @@
-A BCD
-E FGH
-I JKL
-M NOP
-Q RST
-U VW
-X YZ
-a bcd
-e fgh
-i jkl
-m nop
-q rst
-u vw
-x yz
+0 1 2 3
+1 2 3 0
+2 3 0 1
+3 0 1 2
