@@ -6,7 +6,7 @@
 /*   By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:22:15 by tkruger           #+#    #+#             */
-/*   Updated: 2022/01/21 23:15:03 by tkruger          ###   ########.fr       */
+/*   Updated: 2022/01/22 22:53:18 by tkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,31 @@ void	*make_map(t_list *map, char *file)
 	return (map);
 }
 
+int	key_hook(int keycode, void	*mlx, void *win)
+{
+	printf("keycode: %i\n", keycode);
+	if (keycode == 53)
+	{
+		mlx_destroy_window(mlx, win);
+		exit(0);
+	}
+	return (0);
+}
+
 int	main(__unused int argc, __unused char **argv)
 {
+	t_vars	*vars;
 	t_list	*map;
-/* 	void	*mlx;
-	void	*mlx_win; */
+	void	*mlx_img;
 
 	map = NULL;
 	map = make_map(map, "fdf.txt");
-/* 
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
-	mlx_loop(mlx); */
+
+	vars->mlx = mlx_init();
+	vars->win = mlx_new_window(vars->mlx, 1920, 1080, "fdf");
+	
+	mlx_key_hook(vars->win, key_hook, &vars);
+	mlx_loop(vars->mlx);
 
 	return (0);
 }
