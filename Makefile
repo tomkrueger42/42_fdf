@@ -6,13 +6,13 @@
 #    By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/27 22:03:08 by tjensen           #+#    #+#              #
-#    Updated: 2022/01/22 21:11:46 by tkruger          ###   ########.fr        #
+#    Updated: 2022/01/23 18:17:32 by tkruger          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	fdf
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror # -g -fsanitize=address
 INC		=	./inc/fdf.h
 SRC_PATH =	./src/
 SRCS	=	fdf.c image.c
@@ -57,6 +57,3 @@ re: fclean all
 dbg: fclean libmake
 	$(CC) $(CFLAGS) -g $(SRC) $(LIBFT) -o $(NAME)
 	lldb fdf fdf.txt
-
-asan: fclean libmake
-	$(CC) $(CFLAGS) -fsanitize=address $(SRC) $(LIBFT) -o $(NAME)
