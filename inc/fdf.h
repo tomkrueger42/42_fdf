@@ -6,7 +6,7 @@
 /*   By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/01/23 18:46:09 by tkruger          ###   ########.fr       */
+/*   Updated: 2022/01/24 20:49:44 by tkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,12 @@ typedef struct	s_data
 /* fdf.c */
 
 int		main(int argc, char **argv);
-void	*make_map(struct s_list *map, char *file);
+t_list	*make_map(t_list *map, char *file);
 int		key_hook(int keycode, void	*mlx, void *win);
 
 /* image.c */
 
+int		get_value(t_list *map_node, int pos);
 t_data	draw_wireframe(t_list *map, t_data img);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 

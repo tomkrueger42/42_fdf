@@ -6,13 +6,13 @@
 #    By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/27 22:03:08 by tjensen           #+#    #+#              #
-#    Updated: 2022/01/23 18:17:32 by tkruger          ###   ########.fr        #
+#    Updated: 2022/01/24 21:39:27 by tkruger          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	fdf
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror # -g -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror #-g # -fsanitize=address
 INC		=	./inc/fdf.h
 SRC_PATH =	./src/
 SRCS	=	fdf.c image.c
@@ -22,7 +22,7 @@ LIBFT	=	-L./lib/libft -lft lib/libft/libft.a
 MINILIBX =	-Lmlx -lmlx -framework OpenGL -framework AppKit mlx/libmlx.a
 LIBS	=	$(LIBFT) $(MINILIBX)
 
-.PHONY: all $(NAME) $(OBJ_PATH) libmake clean fclean re dbg asan
+.PHONY: all $(NAME) $(OBJ_PATH) libmake clean fclean re
 
 all: $(NAME)
 
@@ -42,6 +42,7 @@ libmake:
 clean:
 	@rm -rf $(OBJ_PATH)
 	@rm -f *.o *~
+	@rm -rf *.dSYM
 	@make -C lib/libft/ clean
 	@make -C mlx/ clean
 	@echo "\033[1;32m.o files removed!\033[0m"
@@ -53,7 +54,3 @@ fclean: clean
 	@echo "\033[1;32mbinary files removed!\033[0m" 
 
 re: fclean all
-
-dbg: fclean libmake
-	$(CC) $(CFLAGS) -g $(SRC) $(LIBFT) -o $(NAME)
-	lldb fdf fdf.txt
