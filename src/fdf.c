@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:22:15 by tkruger           #+#    #+#             */
-/*   Updated: 2022/01/25 14:10:52 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/01/25 19:33:52 by tkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_list	*make_map(t_list *map, char *file)
 		if (n_nbrs == -1)
 		{
 			n_nbrs = ft_count_char(line, ' ') + 1;
-			map = ft_lstnew(&n_nbrs);
+			// map = ft_lstnew(&n_nbrs);
 		}
 		ft_lstadd_back(&map, ft_lstnew(ft_getnbrs(ft_strtrim(line, "\n"))));
 		free(line);
@@ -41,15 +41,12 @@ t_list	*make_map(t_list *map, char *file)
 
 void	print_map(t_list *map)
 {
-	int		width;
 	int		i;
 
-	width = map->content[0];
-	map = map->next;
 	while (map != NULL)
 	{
 		i = 0;
-		while (i < width)
+		while (i < WIDTH)
 		{
 			printf("%i ", map->content[i]);
 			i++;
@@ -80,14 +77,15 @@ int	main(__unused int argc, __unused char **argv)
 	print_map(map);
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIN_X, WIN_Y, "fdf");
-	img.img = mlx_new_image(vars.mlx, WIN_X, WIN_Y);
+	img.img = mlx_new_image(vars.mlx, IMG_X, IMG_Y);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
 									&img.line_length, &img.endian);
-
-	// img = draw_wireframe(map, img);
-	// mlx_put_image_to_window(vars.mlx, vars.win, &img, 0, 0);
-	// mlx_key_hook(vars.win, key_hook, &vars);
-	// mlx_loop(vars.mlx);
+	printf("window opened\n");
+	img = draw_wireframe(map, img);
+	printf("draw_wireframe() completed\n");
+	mlx_put_image_to_window(vars.mlx, vars.win, img.img, (WIN_X - IMG_X) / 2, (WIN_Y - IMG_Y) / 2);
+	mlx_key_hook(vars.win, key_hook, &vars);
+	mlx_loop(vars.mlx);
 
 	return (0);
 }

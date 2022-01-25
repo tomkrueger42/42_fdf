@@ -6,7 +6,7 @@
 /*   By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/01/24 20:49:44 by tkruger          ###   ########.fr       */
+/*   Updated: 2022/01/25 19:39:14 by tkruger          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,15 @@
 
 # include <stdio.h>
 
-/* modifiable */
+/* mlx window and image */
 
-# define WIN_X		960
-# define WIN_Y		540
+# define WIDTH	4
+
+# define WIN_X	960
+# define WIN_Y	540
+# define WIN_U	0.9
+# define IMG_X	WIN_X * WIN_U
+# define IMG_Y	WIN_Y * WIN_U
 
 /* defines */
 
@@ -44,6 +49,13 @@ typedef struct	s_data
 	int		endian;
 }	t_data;
 
+typedef struct	s_px
+{
+	int	x;
+	int	y;
+	int color;
+}	t_px;
+
 /* function prototypes */
 
 /* fdf.c */
@@ -54,8 +66,9 @@ int		key_hook(int keycode, void	*mlx, void *win);
 
 /* image.c */
 
-int		get_value(t_list *map_node, int pos);
 t_data	draw_wireframe(t_list *map, t_data img);
+t_px	*set_px(int x, int y, int color);
+void	draw_line(t_data *img, t_px *start, t_px *end);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 
