@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkruger <tkruger@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:22:15 by tkruger           #+#    #+#             */
-/*   Updated: 2022/01/25 19:33:52 by tkruger          ###   ########.fr       */
+/*   Updated: 2022/02/02 21:33:19 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	main(__unused int argc, __unused char **argv)
 	t_vars	vars;
 	t_data	img;
 
+	map = NULL;
 	map = make_map(map, "fdf.txt");
 	print_map(map);
 	vars.mlx = mlx_init();
@@ -81,7 +82,7 @@ int	main(__unused int argc, __unused char **argv)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
 									&img.line_length, &img.endian);
 	printf("window opened\n");
-	img = draw_wireframe(map, img);
+	draw_wireframe(map, &img);
 	printf("draw_wireframe() completed\n");
 	mlx_put_image_to_window(vars.mlx, vars.win, img.img, (WIN_X - IMG_X) / 2, (WIN_Y - IMG_Y) / 2);
 	mlx_key_hook(vars.win, key_hook, &vars);
