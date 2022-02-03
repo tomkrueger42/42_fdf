@@ -6,13 +6,13 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 22:30:50 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/02 22:07:48 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/03 23:43:04 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 
-#define ROTATION 1
+#define ROTATION 2
 #define WARP 70
 
 void	draw_wireframe(t_list *map, t_data *img)
@@ -23,30 +23,41 @@ void	draw_wireframe(t_list *map, t_data *img)
 	int		y_count;
 	int		px_distance;
 	t_list	*parser;
+	int		height;
 
-	px_distance = ft_min(2, IMG_X, IMG_Y) / sqrt( pow(WIDTH, 2) + pow(ft_lstsize(map), 2));
-	origin = set_px(ft_lstsize(map) * px_distance / ROTATION, 1, 0x00FFFFFF);
-	cur = set_px(origin->x, origin->y, origin->color);
 	y_count = 0;
 	parser = map;
+	px_distance = ft_min(2, IMG_X, IMG_Y) / sqrt( pow(WIDTH - 1, 2) + pow(ft_lstsize(map), 2));
+	origin = set_px(ft_lstsize(map) * px_distance / ROTATION, parser->content[0] * 10, 0x00FFFFFF);
 	
-	while (y_count <= ft_lstsize(map))
+	while (y_count < ft_lstsize(map))
 	{
 		x_count = 0;
-		while (x_count < WIDTH)
+		cur = set_px(origin->x, origin->y - parser->content[0] * 10, origin->color);
+		while (x_count < WIDTH - 1)
 		{
-			if (y_count < ft_lstsize(map))
-				draw_line(img, cur, set_px(cur->x - (px_distance / ROTATION), cur->y + (px_distance * WARP / 100)/*  - parser->content[x_count] + parser->next->content[x_count] */, cur->color));
-			draw_line(img, cur, set_px(cur->x + px_distance, cur->y + (px_distance / ROTATION * WARP / 100)/*  - parser->content[x_count] + parser->content[x_count + 1] */, 0x00FFFFFF));
+			// y-lines
+			if (y_count < ft_lstsize(map) - 1)
+			{
+				height = parser->content[x_count] - parser->next->content[x_count];
+				draw_line(img, cur, set_px(cur->x - (px_distance / ROTATION), cur->y + (px_distance * WARP / 100) + height * 10, cur->color));
+			}
+			// x-lines
+			height = parser->content[x_count] - parser->content[x_count + 1];
+			draw_line(img, cur, set_px(cur->x + px_distance, cur->y + (px_distance / ROTATION * WARP / 100) + height * 10, 0x00FFFFFF));
 			cur->x += px_distance;
-			cur->y += (px_distance / ROTATION) * WARP / 100;
+			cur->y += (px_distance / ROTATION) * WARP / 100 + height * 10;
 			x_count++;
 		}
-		if (y_count < ft_lstsize(map))
-			draw_line(img, cur, set_px(cur->x - (px_distance / ROTATION), cur->y + px_distance * WARP / 100, 0x00FFFFFF));
+		// last y-line
+		if (y_count < ft_lstsize(map) - 1)
+		{
+			height = parser->content[x_count] - parser->next->content[x_count];
+			draw_line(img, cur, set_px(cur->x - (px_distance / ROTATION), cur->y + px_distance * WARP / 100 + height * 10, 0x00FFFFFF));
+		}
 		origin->x -= (px_distance / ROTATION);
 		origin->y += px_distance * WARP / 100;
-		cur = set_px(origin->x, origin->y, origin->color);
+		parser = parser->next;
 		y_count++;
 	}
 }
