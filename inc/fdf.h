@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/03 23:40:34 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/09 15:36:58 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,12 @@
 # include "../mlx/mlx.h"
 # include "../lib/libft/includes/libft.h"
 
-# include <math.h>
 
 # include <stdio.h>
 
 /* mlx window and image */
 
-# define WIDTH	4
+// # define WIDTH	8
 
 # define WIN_X	960
 # define WIN_Y	540
@@ -35,6 +34,13 @@
 # define ESC_KEY	53
 
 /* struct definition */
+
+typedef struct	s_fdf
+{
+	int		length;
+	int		width;
+	int		amplitude;
+}	t_fdf;
 
 typedef struct	s_vars
 {
@@ -63,12 +69,12 @@ typedef struct	s_px
 /* fdf.c */
 
 int		main(int argc, char **argv);
-t_list	*make_map(t_list *map, char *file);
+t_list	*make_map(t_fdf *fdf, t_list *lst, char *file);
 int		key_hook(int keycode, void	*mlx, void *win);
 
 /* image.c */
 
-void	draw_wireframe(t_list *map, t_data *img);
+void	draw_wireframe(t_fdf *fdf, t_list *map, t_data *img);
 t_px	*set_px(int x, int y, int color);
 void	draw_line(t_data *img, t_px *start, t_px *end);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);

@@ -6,13 +6,13 @@
 #    By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/27 22:03:08 by tjensen           #+#    #+#              #
-#    Updated: 2022/02/03 13:32:47 by tomkrueger       ###   ########.fr        #
+#    Updated: 2022/02/09 15:29:36 by tomkrueger       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	fdf
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror # -g # -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g # -fsanitize=address
 INC		=	./inc/fdf.h
 SRC_PATH =	./src/
 SRCS	=	fdf.c image.c
