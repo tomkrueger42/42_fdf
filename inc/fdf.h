@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/09 15:36:58 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/10 01:33:55 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,15 @@
 # include "../mlx/mlx.h"
 # include "../lib/libft/includes/libft.h"
 
-
 # include <stdio.h>
+
+
+# define CAMP 0x00FF00AA
 
 /* mlx window and image */
 
-// # define WIDTH	8
-
-# define WIN_X	960
-# define WIN_Y	540
-# define WIN_U	9
-# define IMG_X	WIN_X / 10 * WIN_U
-# define IMG_Y	WIN_Y / 10 * WIN_U
+# define WIN_X	800
+# define WIN_Y	800
 
 /* defines */
 
@@ -40,6 +37,7 @@ typedef struct	s_fdf
 	int		length;
 	int		width;
 	int		amplitude;
+	int		max_amp;
 }	t_fdf;
 
 typedef struct	s_vars
@@ -59,9 +57,9 @@ typedef struct	s_data
 
 typedef struct	s_px
 {
-	int	x;
-	int	y;
-	int color;
+	int				x;
+	int				y;
+	unsigned int	color;
 }	t_px;
 
 /* function prototypes */
@@ -70,14 +68,23 @@ typedef struct	s_px
 
 int		main(int argc, char **argv);
 t_list	*make_map(t_fdf *fdf, t_list *lst, char *file);
+void 	set_fdf(t_fdf *fdf, t_list *map);
 int		key_hook(int keycode, void	*mlx, void *win);
 
 /* image.c */
 
+unsigned int	convert_color(t_fdf *fdf, int height);
 void	draw_wireframe(t_fdf *fdf, t_list *map, t_data *img);
 t_px	*set_px(int x, int y, int color);
 void	draw_line(t_data *img, t_px *start, t_px *end);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
+/* colors.c */
+
+unsigned char	get_t(int trgb);
+unsigned char	get_r(int trgb);
+unsigned char	get_g(int trgb);
+unsigned char	get_b(int trgb);
+unsigned int	convert_color(t_fdf *fdf, int height);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:22:15 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/09 15:58:31 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/10 01:33:42 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,23 @@ int	key_hook(int keycode, void	*mlx, void *win)
 	return (0);
 }
 
+void set_fdf(t_fdf *fdf, t_list *map)
+{
+	size_t	i;
+
+	while (map != NULL)
+	{
+		i = 0;
+		while (i < fdf->width)
+		{
+			if (fdf->max_amp < ft_abs(map->content[i]))
+				fdf->max_amp = ft_abs(map->content[i]);
+			i++;
+		}
+		map = map->next;
+	}
+}
+
 int	main(__unused int argc, __unused char **argv)
 {
 	t_list	*map;
@@ -79,16 +96,17 @@ int	main(__unused int argc, __unused char **argv)
 	if (fdf == NULL)
 		return (0);
 	map = make_map(fdf, map, "fdf.txt");
+	set_fdf(fdf, map);
 	// print_map(fdf, map);
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, WIN_X, WIN_Y, "fdf");
-	img.img = mlx_new_image(vars.mlx, IMG_X, IMG_Y);
+	img.img = mlx_new_image(vars.mlx, WIN_X, WIN_Y);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel,
 									&img.line_length, &img.endian);
 	printf("window opened\n");
 	draw_wireframe(fdf, map, &img);
 	printf("draw_wireframe() completed\n");
-	mlx_put_image_to_window(vars.mlx, vars.win, img.img, (WIN_X - IMG_X) / 2, (WIN_Y - IMG_Y) / 2);
+	mlx_put_image_to_window(vars.mlx, vars.win, img.img, 0, 0);
 	mlx_key_hook(vars.win, key_hook, &vars);
 	mlx_loop(vars.mlx);
 
