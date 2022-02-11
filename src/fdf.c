@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:22:15 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/10 01:33:42 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/11 17:13:58 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void set_fdf(t_fdf *fdf, t_list *map)
 		i = 0;
 		while (i < fdf->width)
 		{
-			if (fdf->max_amp < ft_abs(map->content[i]))
-				fdf->max_amp = ft_abs(map->content[i]);
+			if (fdf->max_height < ft_abs(map->content[i]))
+				fdf->max_height = ft_abs(map->content[i]);
 			i++;
 		}
 		map = map->next;

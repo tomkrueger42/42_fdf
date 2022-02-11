@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/10 01:33:55 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/11 17:13:58 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 
 # include <stdio.h>
 
-
-# define CAMP 0x00FF00AA
+# define CBASE 0x00FFFFFF
+# define CMAMP 0x00FF00FF
 
 /* mlx window and image */
 
@@ -36,8 +36,7 @@ typedef struct	s_fdf
 {
 	int		length;
 	int		width;
-	int		amplitude;
-	int		max_amp;
+	int		max_height;
 }	t_fdf;
 
 typedef struct	s_vars
@@ -86,5 +85,6 @@ unsigned char	get_r(int trgb);
 unsigned char	get_g(int trgb);
 unsigned char	get_b(int trgb);
 unsigned int	convert_color(t_fdf *fdf, int height);
+int	set_color(t_px *start, t_px *end, size_t x_counter, size_t y_counter);
 
 #endif

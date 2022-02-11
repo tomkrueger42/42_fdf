@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 22:30:50 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/10 01:45:05 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/11 17:31:51 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,61 +15,60 @@
 
 #include <stdio.h>
 
-#define ROTATION 2
+#define ROTATION 1
 #define WARP 70
 
 void	draw_wireframe(t_fdf *fdf, t_list *map, t_data *img)
 {
 	t_px	*origin;
 	t_px	*cur;
+	t_px	*var;
 	int		x_count;
 	int		y_count;
 	int		px_distance;
 	t_list	*parser;
+	int		cur_height;
 	int		height;
 
 	y_count = 0;
 	parser = map;
 	px_distance = ft_min(2, WIN_X, WIN_Y) / (fdf->width + fdf->length / ROTATION);
-	fdf->amplitude = px_distance / fdf->max_amp;
-	if (fdf->amplitude < 1)
-		fdf->amplitude = 1;
-	height = parser->content[0] * fdf->amplitude;
-	origin = set_px(fdf->length * px_distance / ROTATION, px_distance + height, 0x00FFFFFF /* - (height * 10) */);
+	height = parser->content[0];
+	origin = set_px(fdf->length * px_distance / ROTATION, px_distance + height, convert_color(fdf, ft_abs(height)));
 
-	draw_line(img, set_px(500, 700, convert_color(fdf, 0)), set_px(700, 500, convert_color(fdf, 8)));
-	
-	// while (y_count < fdf->length)
-	// {
-	// 	x_count = 0;
-	// 	height = parser->content[0] * fdf->amplitude;
-	// 	cur = set_px(origin->x, origin->y - height, 0x00FFFFFF /* - (height * 10) */);
-	// 	while (x_count < fdf->width - 1)
-	// 	{
-	// 		// y-lines
-	// 		if (y_count < fdf->length - 1)
-	// 		{
-	// 			height = (parser->content[x_count] - parser->next->content[x_count]) * fdf->amplitude;
-	// 			draw_line(img, cur, set_px(cur->x - (px_distance / ROTATION), cur->y + (px_distance * WARP / 100) + height, 0x00FFFFFF /* 0x00FFFFFF */ /* - (height * 10) */));
-	// 		}
-	//		// x-lines
-	// 		height = (parser->content[x_count] - parser->content[x_count + 1]) * fdf->amplitude;
-	// 		draw_line(img, cur, set_px(cur->x + px_distance, cur->y + (px_distance / ROTATION * WARP / 100) + height, 0x00FFFFFF /* - (height * 10) */));
-	// 		cur->x += px_distance;
-	// 		cur->y += (px_distance / ROTATION) * WARP / 100 + height;
-	// 		x_count++;
-	// 	}
-	// 	// last y-line
-	// 	if (y_count < fdf->length - 1)
-	// 	{
-	// 		height = (parser->content[x_count] - parser->next->content[x_count]) * fdf->amplitude;
-	// 		draw_line(img, cur, set_px(cur->x - (px_distance / ROTATION), cur->y + px_distance * WARP / 100 + height, 0x00FFFFFF /* - (height * 10) */));
-	// 	}
-	// 	origin->x -= (px_distance / ROTATION);
-	// 	origin->y += px_distance * WARP / 100;
-	// 	parser = parser->next;
-	// 	y_count++;
-	// }
+	// draw_line(img, set_px(500, 500, convert_color(fdf, ft_abs(10))), set_px(500, 700, convert_color(fdf, ft_abs(0))));
+
+	while (y_count < fdf->length)
+	{
+		x_count = 0;
+		cur_height = parser->content[0];
+		cur = set_px(origin->x, origin->y - cur_height, convert_color(fdf, ft_abs(cur_height)));
+		while (x_count < fdf->width)
+		{
+			if (y_count < fdf->length - 1)	// y-lines
+			{
+				height = parser->next->content[x_count];
+				var = set_px(cur->x - (px_distance / ROTATION), cur->y + (px_distance * WARP / 100) + cur_height - height, convert_color(fdf, ft_abs(height)));
+				draw_line(img, cur, var);
+			}
+			if (x_count < fdf->width - 1)	// x-lines
+			{
+				height = parser->content[x_count + 1];
+				var = set_px(cur->x + px_distance, cur->y + (px_distance / ROTATION * WARP / 100) +cur_height - height, convert_color(fdf, ft_abs(height)));
+				draw_line(img, cur, var);
+			}
+			x_count++;
+			cur->x += px_distance;
+			cur->y += (px_distance / ROTATION) * WARP / 100 + cur_height;
+			cur_height = parser->content[x_count];
+			cur->y += - cur_height;
+			cur->color = convert_color(fdf, ft_abs(cur_height));
+		}
+		origin->x -= (px_distance / ROTATION);
+		origin->y += px_distance * WARP / 100;
+		parser = parser->next;
+		y_count++;
+	}
 }
 
 t_px	*set_px(int x, int y, int color)
@@ -88,21 +87,16 @@ void	draw_line(t_data *img, t_px *start, t_px *end)
 	double	x;
 	double	y;
 	double	xy_ratio;
-	int		color;
 
 	x = end->x - start->x;
 	y = end->y - start->y;
-	printf("start color: %i | end color: %i\n", start->color, end->color);
-	// 
-	// still working on Farbverlauf between start and end pixel!!!
-	// 
-	color = (end->color - start->color) / (x + y);
 	if (y == 0)
-		y = 1;
-	xy_ratio = x / y;
+		xy_ratio = x;
+	else
+		xy_ratio = x / y;
 	while (x != 0 || y != 0)
 	{
-		my_mlx_pixel_put(img, start->x + x, start->y + y, start->color - (color * (x + y)));
+		my_mlx_pixel_put(img, start->x + x, start->y + y, set_color(start, end, ft_abs(x), ft_abs(y)));
 		if (y == 0 || (x / y >= xy_ratio && xy_ratio >= 0) || (x / y <= xy_ratio && xy_ratio <= 0))
 		{
 			if (x > 0)
