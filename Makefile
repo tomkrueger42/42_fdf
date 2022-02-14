@@ -6,7 +6,7 @@
 #    By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/27 22:03:08 by tjensen           #+#    #+#              #
-#    Updated: 2022/02/10 01:29:05 by tomkrueger       ###   ########.fr        #
+#    Updated: 2022/02/14 13:08:49 by tomkrueger       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror -g # -fsanitize=address
 INC		=	./inc/fdf.h
 SRC_PATH =	./src/
-SRCS	=	colors.c fdf.c image.c
+SRCS	=	cleanup.c colors.c fdf.c image.c
 OBJ_PATH =	./objs/
 OBJS	=	$(patsubst %c,$(OBJ_PATH)%o,$(SRCS))
 LIBFT	=	-L./lib/libft -lft lib/libft/libft.a

@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/11 17:13:58 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/14 13:13:33 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,24 @@
 # include "../mlx/mlx.h"
 # include "../lib/libft/includes/libft.h"
 
-# include <stdio.h>
-
-# define CBASE 0x00FFFFFF
-# define CMAMP 0x00FF00FF
-
 /* mlx window and image */
 
 # define WIN_X	800
 # define WIN_Y	800
 
+/* base and max height colors */
+
+# define CBASE 0xFFFFFF
+# define CMAMP 0xFF00FF
+
+/* define the rotation of the drawn map */
+
+# define ROTATION 1
+
 /* defines */
 
 # define ESC_KEY	53
+
 
 /* struct definition */
 
@@ -37,6 +42,7 @@ typedef struct	s_fdf
 	int		length;
 	int		width;
 	int		max_height;
+	int		px_dist;
 }	t_fdf;
 
 typedef struct	s_vars
@@ -72,7 +78,6 @@ int		key_hook(int keycode, void	*mlx, void *win);
 
 /* image.c */
 
-unsigned int	convert_color(t_fdf *fdf, int height);
 void	draw_wireframe(t_fdf *fdf, t_list *map, t_data *img);
 t_px	*set_px(int x, int y, int color);
 void	draw_line(t_data *img, t_px *start, t_px *end);
@@ -80,11 +85,15 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 /* colors.c */
 
-unsigned char	get_t(int trgb);
 unsigned char	get_r(int trgb);
 unsigned char	get_g(int trgb);
 unsigned char	get_b(int trgb);
 unsigned int	convert_color(t_fdf *fdf, int height);
-int	set_color(t_px *start, t_px *end, size_t x_counter, size_t y_counter);
+int				set_color(t_px *start, t_px *end, size_t x_counter, size_t y_counter);
+
+/* cleanup.c */
+
+void	del(void *ptr);
+void	free_stuff(t_fdf *fdf, t_list *map);
 
 #endif

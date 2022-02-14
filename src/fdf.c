@@ -6,12 +6,15 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:22:15 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/11 17:13:58 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/14 13:14:53 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 #include <fcntl.h>
+
+
+#include <stdio.h>
 
 t_list	*make_map(t_fdf *fdf, t_list *map, char *file)
 {
@@ -58,10 +61,11 @@ void	print_map(t_fdf *fdf, t_list *map)
 
 int	key_hook(int keycode, void	*mlx, void *win)
 {
-	printf("keycode: %i\n", keycode);
 	if (keycode == ESC_KEY)
 	{
+		printf("ESC_KEY pressed :)\n");
 		mlx_destroy_window(mlx, win);
+		printf("r u there? key_hook\n");
 		exit(0);
 	}
 	return (0);
@@ -82,6 +86,7 @@ void set_fdf(t_fdf *fdf, t_list *map)
 		}
 		map = map->next;
 	}
+	fdf->px_dist = ft_min(2, WIN_X, WIN_Y) / (fdf->width + fdf->length / ROTATION);
 }
 
 int	main(__unused int argc, __unused char **argv)
@@ -110,5 +115,7 @@ int	main(__unused int argc, __unused char **argv)
 	mlx_key_hook(vars.win, key_hook, &vars);
 	mlx_loop(vars.mlx);
 
+	printf("hello is anyone there??\n");
+	system("leaks fdf");
 	return (0);
 }
