@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/14 13:13:33 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/18 01:03:25 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 /* base and max height colors */
 
 # define CBASE 0xFFFFFF
-# define CMAMP 0xFF00FF
+# define CMAMP 0xFF8B00
 
 /* define the rotation of the drawn map */
 
@@ -36,14 +36,6 @@
 
 
 /* struct definition */
-
-typedef struct	s_fdf
-{
-	int		length;
-	int		width;
-	int		max_height;
-	int		px_dist;
-}	t_fdf;
 
 typedef struct	s_vars
 {
@@ -59,6 +51,16 @@ typedef struct	s_data
 	int		line_length;
 	int		endian;
 }	t_data;
+
+typedef struct	s_fdf
+{
+	int		length;
+	int		width;
+	int		max_height;
+	int		px_dist;
+	t_vars	vars;
+	t_data	img;
+}	t_fdf;
 
 typedef struct	s_px
 {
@@ -78,10 +80,11 @@ int		key_hook(int keycode, void	*mlx, void *win);
 
 /* image.c */
 
-void	draw_wireframe(t_fdf *fdf, t_list *map, t_data *img);
-t_px	*set_px(int x, int y, int color);
+void	draw_wireframe(t_fdf *fdf, t_list *map);
+void	set_lines(t_fdf *fdf, t_list *map, t_px *cur, int y_count);
+void	y_line(t_fdf *fdf, t_px *cur, int cur_height, int height);
+void	x_line(t_fdf *fdf, t_px *cur, int cur_height, int height);
 void	draw_line(t_data *img, t_px *start, t_px *end);
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 /* colors.c */
 
@@ -90,6 +93,11 @@ unsigned char	get_g(int trgb);
 unsigned char	get_b(int trgb);
 unsigned int	convert_color(t_fdf *fdf, int height);
 int				set_color(t_px *start, t_px *end, size_t x_counter, size_t y_counter);
+
+/* utils.c */
+
+t_px	*set_px(int x, int y, int color);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 /* cleanup.c */
 

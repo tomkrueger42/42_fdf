@@ -1,56 +1,46 @@
-# Sample C Project Structure
+FDF ("fils de fer" in french - translates to english as "wireframe")
 
-**I recommend to use this repo as inspiration to create your own [GitHub Template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository) for your next projects.**
+This project is about creating a simplified 3D graphic representation of a relief landscape.
 
-**To integrate your own library into the template you can copy it sources in the libs folder or add it as a submodule with this command: ```git submodule add <git-submodule-link> libs/libname```**
+Introduction:
 
-**When you added it as submodule you should clone the template repo with ```git clone --recursive <git-template-link>```**
+The representation in 3D of a landscape is a critical aspect of modern mapping. For example, in these times of spatial exploration, to have a 3D representation of Mars is a prerequisite condition to its conquest. As another example, comparing various 3D repre- sentations of an area of high tectonic activity will allow you to better understand these phenomena and their evolution, and as a result, be better prepared.
 
-## Structure
-```
-.
-├── include/
-│   ├ header.h
-│   └ ...
-├── libs/
-│   ├ libft
-│   └ ...
-├── src/
-│   ├ project.c
-│   └ ...
-├── .gitignore
-├── .gitmodules
-├── Makefile
-└── README.md
-```
+Objectives:
 
-This is really just an example template-structure for a C project.
+In this project, I discovered the basics of graphic programming, and in particular how to place points in space, how to join them with segments, and most importantly how to observe the scene from a particular viewpoint.
+I discovered my first graphic library: miniLibX. This library was developed internally (42) and includes the minimum necessary to open a window, light a pixel and deal with events linked to this window: keyboard and mouse. This project introduced me to “events” programming.
 
-There is no 'standard' C project structure, it really depends on the project and your personal application and your needs.
+Instructions:
 
-But in general it is always good to have some kind of structure and being aware of that it matches with the type and scope of the project.
+- clone repository recursively:
 
-I created this repo for myself to use it as git-template for the most 42 core curriculum projects.
+git clone --recurse-submodules https://github.com/tomkr-01/06_fdf.git
 
-The Makefile in every library should at least contain these rules:
-```all``` ```clean``` ```fclean``` ```re``` ```debug``` ```release```
+- build
 
-## How to use it
+make all
 
-1. **Create** new repo based on this template.
-2. **Rename** project.c & project.h file and change header protection (#ifndef...)
-3. **Add libraries** if you have additional ones for your project
-- for example: ```git submodule add <libft-repo-link> libs/libft```
-4. **Makefile:** Add all *.c files to the SRCS variable
-5. **Makefile:** Name all libs in the LDLIBS variable ```libft -> "-lft" || libmath -> "-lmath"```
+- lauch
 
-## To remove a submodule from your repo you can delete it this way:
-1. Remove the submodule entry from .git/config <br> ```git submodule deinit -f path/to/submodule```
+./fdf <mapname>.<suffix>
 
-2. Remove the submodule directory from the superproject's .git/modules directory <br> ```rm -rf .git/modules/path/to/submodule```
+For execution the program requires a text file that contains a map. The map must be properly formatted, as in that it can only contain signed 32-bit integer numbers seperated by spaces and each line must contain the same amount of numbers.
 
-3. Remove the entry in .gitmodules and remove the submodule directory located at path/to/submodule <br> ```git rm -f path/to/submodule```
+Example:
 
-## Remove 'preinstalled' libft:
+$>cat 42.fdf
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+0  0 10 10  0  0 10 10  0  0  0 10 10 10 10 10  0  0  0
+0  0 10 10  0  0 10 10  0  0  0  0  0  0  0 10 10  0  0
+0  0 10 10  0  0 10 10  0  0  0  0  0  0  0 10 10  0  0
+0  0 10 10 10 10 10 10  0  0  0  0 10 10 10 10  0  0  0
+0  0  0 10 10 10 10 10  0  0  0 10 10  0  0  0  0  0  0
+0  0  0  0  0  0 10 10  0  0  0 10 10  0  0  0  0  0  0
+0  0  0  0  0  0 10 10  0  0  0 10 10 10 10 10 10  0  0
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+$>./fdf 42.txt
 
-```git submodule deinit -f libs/libft && rm -rf .git/modules/libs/libft && git rm -f libs/libft```
+!!! still needs screenshot :) !!!

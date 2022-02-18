@@ -4,6 +4,8 @@
 		"libft.h": "c",
 		"math.h": "c",
 		"cmath": "c",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"algorithm": "c",
+		"numbers": "c"
 	}
 }

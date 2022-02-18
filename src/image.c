@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 22:30:50 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/14 16:09:15 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/17 15:35:25 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,25 @@
 
 #define WARP 70
 
-void	new_fn(t_fdf *fdf, t_list *map, t_data *img, t_px *cur, int y_count);
-
-void	draw_wireframe(t_fdf *fdf, t_list *map, t_data *img)
+void	draw_wireframe(t_fdf *fdf, t_list *map)
 {
 	t_px	*origin;
-	int		height;
 	t_px	*cur;
 	int		cur_height;
 	int		y_count;
 
 	y_count = 0;
-	height = map->content[0];
 	origin = set_px(fdf->length * fdf->px_dist / ROTATION,
-					fdf->px_dist + height,
-					convert_color(fdf, ft_abs(height)));
+					fdf->px_dist + map->content[0],
+					convert_color(fdf, ft_abs(map->content[0])));
 	while (y_count < fdf->length)
 	{
 		cur_height = map->content[0];
 		cur = set_px(origin->x,
 					origin->y - cur_height,
 					convert_color(fdf, ft_abs(cur_height)));
-		new_fn(fdf, map, img, cur, y_count);
-		
+		set_lines(fdf, map, cur, y_count);
 		free(cur);
-		cur = NULL;
 		origin->x -= (fdf->px_dist / ROTATION);
 		origin->y += fdf->px_dist * WARP / 100;
 		map = map->next;
@@ -52,10 +46,8 @@ void	draw_wireframe(t_fdf *fdf, t_list *map, t_data *img)
 	// system("leaks fdf");
 }
 
-void	new_fn(t_fdf *fdf, t_list *map, t_data *img, t_px *cur, int y_count)
+void	set_lines(t_fdf *fdf, t_list *map, t_px *cur, int y_count)
 {
-	t_px	*var;
-	int		height;
 	int		x_count;
 	int		cur_height;
 
@@ -64,21 +56,9 @@ void	new_fn(t_fdf *fdf, t_list *map, t_data *img, t_px *cur, int y_count)
 	while (x_count < fdf->width)
 	{
 		if (y_count < fdf->length - 1)	// y-lines
-		{
-			height = map->next->content[x_count];
-			var = set_px(cur->x - (fdf->px_dist / ROTATION),
-						cur->y + (fdf->px_dist * WARP / 100) + cur_height - height,
-						convert_color(fdf, ft_abs(height)));
-			draw_line(img, cur, var);
-		}
+			y_line(fdf, cur, cur_height, map->next->content[x_count]);
 		if (x_count < fdf->width - 1)	// x-lines
-		{
-			height = map->content[x_count + 1];
-			var = set_px(cur->x + fdf->px_dist,
-						cur->y + (fdf->px_dist / ROTATION * WARP / 100) + cur_height - height,
-						convert_color(fdf, ft_abs(height)));
-			draw_line(img, cur, var);
-		}
+			x_line(fdf, cur, cur_height, map->content[x_count + 1]);
 		x_count++;
 		cur->x += fdf->px_dist;
 		cur->y += (fdf->px_dist / ROTATION) * WARP / 100 + cur_height;
@@ -86,6 +66,27 @@ void	new_fn(t_fdf *fdf, t_list *map, t_data *img, t_px *cur, int y_count)
 		cur->y += - cur_height;
 		cur->color = convert_color(fdf, ft_abs(cur_height));
 	}
+}
+
+void	y_line(t_fdf *fdf, t_px *cur, int cur_height, int height)
+{
+	t_px	*tmp;
+
+	tmp = set_px(cur->x - (fdf->px_dist / ROTATION),
+			cur->y + (fdf->px_dist * WARP / 100) + cur_height - height,
+			convert_color(fdf, ft_abs(height)));
+	draw_line(&fdf->img, cur, tmp);
+}
+
+void	x_line(t_fdf *fdf, t_px *cur, int cur_height, int height)
+{
+	t_px	*tmp;
+
+	tmp = set_px(cur->x + fdf->px_dist,
+				cur->y + (fdf->px_dist / ROTATION * WARP / 100)
+				+ cur_height - height,
+				convert_color(fdf, ft_abs(height)));
+	draw_line(&fdf->img, cur, tmp);
 }
 
 t_px	*set_px(int x, int y, int color)
@@ -110,14 +111,14 @@ void	draw_line(t_data *img, t_px *start, t_px *end)
 	if (y == 0)
 		xy_ratio = x;
 	else
-		xy_ratio = x / y;
+		xy_ratio = x / y; // -2
 	while (x != 0 || y != 0)
 	{
 		my_mlx_pixel_put(img, start->x + x, start->y + y,
 							set_color(start, end, ft_abs(x), ft_abs(y)));
-		if (x > 0 && (y == 0 || (x / y >= xy_ratio && xy_ratio > 0)))
+		if (x > 0 && (y == 0 || (x / y >= xy_ratio && xy_ratio > 0) /* || (x / y < xy_ratio && xy_ratio < 0) */))
 			x--;
-		else if (x < 0 && (y == 0 || (x / y <= xy_ratio && xy_ratio < 0)))
+		else if (x < 0 && (y == 0 || (x / y <= xy_ratio && xy_ratio < 0) /* || (x / y > xy_ratio && xy_ratio > 0) */))
 			x++;
 		else if (y > 0)
 			y--;

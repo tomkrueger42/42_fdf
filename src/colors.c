@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 01:28:06 by tomkrueger        #+#    #+#             */
-/*   Updated: 2022/02/14 12:45:29 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/17 15:34:46 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,26 @@ unsigned int	convert_color(t_fdf *fdf, int height)
 	r = get_r(CBASE) - (double)get_r(CBASE ^ CMAMP) * percentage;
 	g = get_g(CBASE) - (double)get_g(CBASE ^ CMAMP) * percentage;
 	b = get_b(CBASE) - (double)get_b(CBASE ^ CMAMP) * percentage;
-	return (*(int *)(unsigned char [3]){b, g, r});
+	return (*(int *)(unsigned char [4]){b, g, r});
 }
 
 int	set_color(t_px *start, t_px *end, size_t x_counter, size_t y_counter)
 {
-	int		x;
-	int		y;
-	double	d_r;
-	double	d_g;
-	double	d_b;
+	double	x;
+	double	y;
+	double	r;
+	double	g;
+	double	b;
 
 	x = ft_abs(end->x - start->x);
 	y = ft_abs(end->y - start->y);
-	d_r = (double)(get_r(end->color) - get_r(start->color)) / (double)(x + y) * (x_counter + y_counter);
-	d_g = (double)(get_g(end->color) - get_g(start->color)) / (double)(x + y) * (x_counter + y_counter);
-	d_b = (double)(get_b(end->color) - get_b(start->color)) / (double)(x + y) * (x_counter + y_counter);
-	return (*(int *)(unsigned char [3]){get_b(start->color) + d_b, get_g(start->color) + d_g, get_r(start->color) + d_r});
+	r = get_r(end->color) - get_r(start->color);
+	g = get_g(end->color) - get_g(start->color);
+	b = get_b(end->color) - get_b(start->color);
+	r = r / (x + y) * (double)(x_counter + y_counter);
+	g = g / (x + y) * (double)(x_counter + y_counter);
+	b = b / (x + y) * (double)(x_counter + y_counter);
+
+	return (*(int *)(unsigned char [4]){get_b(start->color) + (int)b,
+			get_g(start->color) + (int)g, get_r(start->color) + (int)r});
 }
