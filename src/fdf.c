@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:22:15 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/18 01:03:56 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/18 12:39:59 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_list	*make_map(t_fdf *fdf, t_list *map, char *file)
 	while (line != NULL || fdf->width == -1)
 	{
 		line = get_next_line(fd);
-		if (line == NULL/*  && fdf->width != -1 */)
+		if (line == NULL)
 			break ;
 		if (fdf->width == -1)
 			fdf->width = ft_count_nbrs(line);
@@ -66,10 +66,7 @@ int	key_hook(int keycode, void	*mlx, void *win)
 
 	if (keycode == ESC_KEY)
 	{
-		printf("ESC_KEY pressed :)\n");
 		system("leaks fdf");
-		mlx_destroy_window(mlx, win);
-		printf("r u there? key_hook\n");
 		exit(0);
 	}
 	return (0);
@@ -90,6 +87,8 @@ void set_fdf(t_fdf *fdf, t_list *map)
 		}
 		map = map->next;
 	}
+	if (fdf->max_height == 0)
+		fdf->max_height = 1;
 	fdf->px_dist = ft_min(2, WIN_X, WIN_Y) / (fdf->width + fdf->length / ROTATION);
 }
 

@@ -6,16 +6,12 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 22:30:50 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/17 15:35:25 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/18 12:41:00 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 # include <math.h>
-
-#include <stdio.h>
-
-#define WARP 70
 
 void	draw_wireframe(t_fdf *fdf, t_list *map)
 {
@@ -26,7 +22,7 @@ void	draw_wireframe(t_fdf *fdf, t_list *map)
 
 	y_count = 0;
 	origin = set_px(fdf->length * fdf->px_dist / ROTATION,
-					fdf->px_dist + map->content[0],
+					fdf->px_dist + map->content[0] + 10,
 					convert_color(fdf, ft_abs(map->content[0])));
 	while (y_count < fdf->length)
 	{
@@ -41,9 +37,9 @@ void	draw_wireframe(t_fdf *fdf, t_list *map)
 		map = map->next;
 		y_count++;
 	}
+	cur = NULL;
 	free(origin);
 	origin = NULL;
-	// system("leaks fdf");
 }
 
 void	set_lines(t_fdf *fdf, t_list *map, t_px *cur, int y_count)
@@ -75,7 +71,11 @@ void	y_line(t_fdf *fdf, t_px *cur, int cur_height, int height)
 	tmp = set_px(cur->x - (fdf->px_dist / ROTATION),
 			cur->y + (fdf->px_dist * WARP / 100) + cur_height - height,
 			convert_color(fdf, ft_abs(height)));
+	if (tmp == NULL)
+		return ;
 	draw_line(&fdf->img, cur, tmp);
+	free(tmp);
+	tmp = NULL;
 }
 
 void	x_line(t_fdf *fdf, t_px *cur, int cur_height, int height)
@@ -86,18 +86,11 @@ void	x_line(t_fdf *fdf, t_px *cur, int cur_height, int height)
 				cur->y + (fdf->px_dist / ROTATION * WARP / 100)
 				+ cur_height - height,
 				convert_color(fdf, ft_abs(height)));
+	if (tmp == NULL)
+		return ;
 	draw_line(&fdf->img, cur, tmp);
-}
-
-t_px	*set_px(int x, int y, int color)
-{
-	t_px	*new;
-
-	new = malloc(sizeof(struct s_px) * 1);
-	new->x = x;
-	new->y = y;
-	new->color = color;
-	return (new);
+	free(tmp);
+	tmp = NULL;
 }
 
 void	draw_line(t_data *img, t_px *start, t_px *end)
@@ -111,28 +104,20 @@ void	draw_line(t_data *img, t_px *start, t_px *end)
 	if (y == 0)
 		xy_ratio = x;
 	else
-		xy_ratio = x / y; // -2
+		xy_ratio = x / y;
 	while (x != 0 || y != 0)
 	{
 		my_mlx_pixel_put(img, start->x + x, start->y + y,
 							set_color(start, end, ft_abs(x), ft_abs(y)));
-		if (x > 0 && (y == 0 || (x / y >= xy_ratio && xy_ratio > 0) /* || (x / y < xy_ratio && xy_ratio < 0) */))
+		if (x > 0 && (y == 0 || (x / y >= xy_ratio && xy_ratio > 0)
+					|| (x / y < xy_ratio && xy_ratio < 0)))
 			x--;
-		else if (x < 0 && (y == 0 || (x / y <= xy_ratio && xy_ratio < 0) /* || (x / y > xy_ratio && xy_ratio > 0) */))
+		else if (x < 0 && (y == 0 || (x / y <= xy_ratio && xy_ratio < 0)
+					|| (x / y > xy_ratio && xy_ratio > 0)))
 			x++;
 		else if (y > 0)
 			y--;
 		else if (y < 0)
 			y++;
 	}
-	free(end);
-	end = NULL;
-}
-
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst;
-
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
 }

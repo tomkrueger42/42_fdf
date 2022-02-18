@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/18 01:03:25 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/18 12:25:16 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "../mlx/mlx.h"
 # include "../lib/libft/includes/libft.h"
 
-/* mlx window and image */
+/* window size */
 
 # define WIN_X	800
 # define WIN_Y	800
@@ -26,14 +26,14 @@
 # define CBASE 0xFFFFFF
 # define CMAMP 0xFF8B00
 
-/* define the rotation of the drawn map */
+/* define the rotation and y-warp of the drawn map */
 
 # define ROTATION 1
+# define WARP 70
 
-/* defines */
+/* fixed defines */
 
 # define ESC_KEY	53
-
 
 /* struct definition */
 
