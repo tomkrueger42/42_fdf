@@ -6,12 +6,11 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 22:30:50 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/18 12:41:00 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/19 17:13:26 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
-# include <math.h>
 
 void	draw_wireframe(t_fdf *fdf, t_list *map)
 {
@@ -23,21 +22,19 @@ void	draw_wireframe(t_fdf *fdf, t_list *map)
 	y_count = 0;
 	origin = set_px(fdf->length * fdf->px_dist / ROTATION,
 					fdf->px_dist + map->content[0] + 10,
-					convert_color(fdf, ft_abs(map->content[0])));
+					map->content[1]);
 	while (y_count < fdf->length)
 	{
 		cur_height = map->content[0];
 		cur = set_px(origin->x,
 					origin->y - cur_height,
-					convert_color(fdf, ft_abs(cur_height)));
+					map->content[1]);
 		set_lines(fdf, map, cur, y_count);
-		free(cur);
 		origin->x -= (fdf->px_dist / ROTATION);
 		origin->y += fdf->px_dist * WARP / 100;
 		map = map->next;
 		y_count++;
 	}
-	cur = NULL;
 	free(origin);
 	origin = NULL;
 }
@@ -52,25 +49,31 @@ void	set_lines(t_fdf *fdf, t_list *map, t_px *cur, int y_count)
 	while (x_count < fdf->width)
 	{
 		if (y_count < fdf->length - 1)	// y-lines
-			y_line(fdf, cur, cur_height, map->next->content[x_count]);
-		if (x_count < fdf->width - 1)	// x-lines
-			x_line(fdf, cur, cur_height, map->content[x_count + 1]);
-		x_count++;
+		{
+			y_line(fdf, cur, cur_height, &map->next->content[x_count]);
+		}
+		if (x_count < fdf->width - 2)	// x-lines
+		{
+			x_line(fdf, cur, cur_height, &map->content[x_count + 2]);
+		}
+		x_count += 2;
 		cur->x += fdf->px_dist;
 		cur->y += (fdf->px_dist / ROTATION) * WARP / 100 + cur_height;
 		cur_height = map->content[x_count];
 		cur->y += - cur_height;
-		cur->color = convert_color(fdf, ft_abs(cur_height));
+		cur->color = map->content[x_count + 1];
 	}
+	free(cur);
+	cur = NULL;
 }
 
-void	y_line(t_fdf *fdf, t_px *cur, int cur_height, int height)
+void	y_line(t_fdf *fdf, t_px *cur, int cur_height, int *height_color)
 {
 	t_px	*tmp;
 
 	tmp = set_px(cur->x - (fdf->px_dist / ROTATION),
-			cur->y + (fdf->px_dist * WARP / 100) + cur_height - height,
-			convert_color(fdf, ft_abs(height)));
+			cur->y + (fdf->px_dist * WARP / 100) + cur_height - height_color[0],
+			height_color[1]);
 	if (tmp == NULL)
 		return ;
 	draw_line(&fdf->img, cur, tmp);
@@ -78,14 +81,14 @@ void	y_line(t_fdf *fdf, t_px *cur, int cur_height, int height)
 	tmp = NULL;
 }
 
-void	x_line(t_fdf *fdf, t_px *cur, int cur_height, int height)
+void	x_line(t_fdf *fdf, t_px *cur, int cur_height, int *height_color)
 {
 	t_px	*tmp;
 
 	tmp = set_px(cur->x + fdf->px_dist,
 				cur->y + (fdf->px_dist / ROTATION * WARP / 100)
-				+ cur_height - height,
-				convert_color(fdf, ft_abs(height)));
+				+ cur_height - height_color[0],
+				height_color[1]);
 	if (tmp == NULL)
 		return ;
 	draw_line(&fdf->img, cur, tmp);

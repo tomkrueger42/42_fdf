@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 01:28:06 by tomkrueger        #+#    #+#             */
-/*   Updated: 2022/02/17 15:34:46 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/18 23:11:41 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ unsigned char	get_b(int trgb)
 {
 	return (trgb & 0xFF);
 }
-
+/* 
 unsigned int	convert_color(t_fdf *fdf, int height)
 {
 	double	percentage;
@@ -40,7 +40,7 @@ unsigned int	convert_color(t_fdf *fdf, int height)
 	b = get_b(CBASE) - (double)get_b(CBASE ^ CMAMP) * percentage;
 	return (*(int *)(unsigned char [4]){b, g, r});
 }
-
+ */
 int	set_color(t_px *start, t_px *end, size_t x_counter, size_t y_counter)
 {
 	double	x;

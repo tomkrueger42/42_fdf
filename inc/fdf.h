@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/18 12:25:16 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/19 17:01:07 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 
 /* window size */
 
-# define WIN_X	800
-# define WIN_Y	800
+# define WIN_X	1440
+# define WIN_Y	780
 
-/* base and max height colors */
+/* void color and maximum height */
 
-# define CBASE 0xFFFFFF
-# define CMAMP 0xFF8B00
+# define CVOID 0xFFFFFF
+# define MHGHT 100
 
 /* define the rotation and y-warp of the drawn map */
 
@@ -58,6 +58,9 @@ typedef struct	s_fdf
 	int		width;
 	int		max_height;
 	int		px_dist;
+	int		win_width;
+	int		win_length;
+	int		height_multiple;
 	t_vars	vars;
 	t_data	img;
 }	t_fdf;
@@ -82,8 +85,8 @@ int		key_hook(int keycode, void	*mlx, void *win);
 
 void	draw_wireframe(t_fdf *fdf, t_list *map);
 void	set_lines(t_fdf *fdf, t_list *map, t_px *cur, int y_count);
-void	y_line(t_fdf *fdf, t_px *cur, int cur_height, int height);
-void	x_line(t_fdf *fdf, t_px *cur, int cur_height, int height);
+void	y_line(t_fdf *fdf, t_px *cur, int cur_height, int *height_color);
+void	x_line(t_fdf *fdf, t_px *cur, int cur_height, int *height_color);
 void	draw_line(t_data *img, t_px *start, t_px *end);
 
 /* colors.c */

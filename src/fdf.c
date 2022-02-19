@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:22:15 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/18 12:39:59 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/19 17:06:49 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,35 @@
 
 
 #include <stdio.h>
+
+int	*extract_values(char **splitted)
+{
+	int		*nbrs;
+	size_t	splitted_len;
+	size_t	i;
+
+	if (splitted == NULL)
+		return (NULL);
+	nbrs = ft_calloc(ft_arrlen(splitted) * 2, sizeof(*nbrs));
+	if (nbrs == NULL)
+		return (NULL);
+	i = 0;
+	splitted_len = ft_arrlen(splitted);
+	while (i < splitted_len * 2)
+	{
+		nbrs[i] = ft_atoi(splitted[i / 2]);
+		i++;
+		if (ft_strchr(splitted[i / 2], ',') == NULL)
+			nbrs[i] = -1;
+		else
+			nbrs[i] = ft_atoi_base(ft_strchr(splitted[i / 2], ',') + 3, 16);
+		free(splitted[i / 2]);
+		splitted[i++ / 2] = NULL;
+	}
+	free(splitted);
+	splitted = NULL;
+	return (nbrs);
+}
 
 t_list	*make_map(t_fdf *fdf, t_list *map, char *file)
 {
@@ -31,10 +60,8 @@ t_list	*make_map(t_fdf *fdf, t_list *map, char *file)
 		if (line == NULL)
 			break ;
 		if (fdf->width == -1)
-			fdf->width = ft_count_nbrs(line);
-		if (ft_count_nbrs(line) == 0)
-			break ;
-		nbrs = ft_getnbrs_free(ft_split_free(ft_strtrim_free(line, "\n"), ' '));
+			fdf->width = (ft_count_nbrs(line) - ft_count_char(line, ',')) * 2;
+		nbrs = extract_values(ft_split_free(ft_strtrim_free(line, "\n"), ' '));
 		ft_lstadd_back(&map, ft_lstnew(nbrs));
 	}
 	close(fd);
@@ -44,7 +71,8 @@ t_list	*make_map(t_fdf *fdf, t_list *map, char *file)
 
 void	print_map(t_fdf *fdf, t_list *map)
 {
-	int		i;
+	int	i;
+	int	c = 0;
 
 	if (map == NULL)
 		return ;
@@ -53,11 +81,14 @@ void	print_map(t_fdf *fdf, t_list *map)
 		i = 0;
 		while (i < fdf->width)
 		{
-			printf("%i ", map->content[i]);
+			printf(" %i,", map->content[i]);
+			i++;
+			printf("%x", map->content[i]);
 			i++;
 		}
 		printf("\n");
 		map = map->next;
+		// printf("count: %i\n", c++);
 	}
 }
 
@@ -75,21 +106,33 @@ int	key_hook(int keycode, void	*mlx, void *win)
 void set_fdf(t_fdf *fdf, t_list *map)
 {
 	size_t	i;
+	t_list	*parser;
 
-	while (map != NULL)
+	parser = map;
+	fdf->max_height = 1;
+	while (parser != NULL)
 	{
 		i = 0;
 		while (i < fdf->width)
 		{
-			if (fdf->max_height < ft_abs(map->content[i]))
-				fdf->max_height = ft_abs(map->content[i]);
-			i++;
+			if (fdf->max_height < ft_abs(parser->content[i++]))
+				fdf->max_height = ft_abs(parser->content[i - 1]);
+			if (parser->content[i++] == -1)
+				parser->content[i - 1] = CVOID;
 		}
-		map = map->next;
+		parser = parser->next;
 	}
-	if (fdf->max_height == 0)
-		fdf->max_height = 1;
-	fdf->px_dist = ft_min(2, WIN_X, WIN_Y) / (fdf->width + fdf->length / ROTATION);
+	parser = map;
+	while (parser != NULL)
+	{
+		i = 0;
+		while (i++ < fdf->width)
+			parser->content[i++ - 1] *= MHGHT / fdf->max_height;
+		parser = parser->next;
+	}
+	fdf->px_dist = ft_min(2, WIN_X, WIN_Y) / (fdf->width / 2 + fdf->length * WARP / 100 / ROTATION);
+	if (fdf->px_dist < 2)
+		fdf->px_dist = 2;
 }
 
 int	main(int argc, char **argv)
@@ -115,11 +158,12 @@ int	main(int argc, char **argv)
 	map = make_map(fdf, map, argv[1]);
 	if (map == NULL)
 		return (0);
-	// print_map(fdf, map);
 	set_fdf(fdf, map);
+	printf("width: %i, length: %i\n", fdf->width, fdf->length);
+	// print_map(fdf, map);
 	fdf->vars.mlx = mlx_init();
 	fdf->vars.win = mlx_new_window(fdf->vars.mlx, WIN_X, WIN_Y, "fdf");
-	fdf->img.img = mlx_new_image(fdf->vars.mlx, WIN_X, WIN_Y);
+	fdf->img.img = mlx_new_image(fdf->vars.mlx, WIN_X * 2, WIN_Y * 2);
 	fdf->img.addr = mlx_get_data_addr(fdf->img.img, &fdf->img.bits_per_pixel,
 									&fdf->img.line_length, &fdf->img.endian);
 	draw_wireframe(fdf, map);
