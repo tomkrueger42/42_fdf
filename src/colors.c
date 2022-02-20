@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 01:28:06 by tomkrueger        #+#    #+#             */
-/*   Updated: 2022/02/19 23:25:54 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/20 19:57:46 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ unsigned char	get_b(int trgb)
 	return (trgb & 0xFF);
 }
 
-unsigned int	convert_color(t_fdf *fdf, int height)
+int	convert_color(t_fdf *fdf, int height)
 {
 	double	percentage;
 	unsigned char	r;

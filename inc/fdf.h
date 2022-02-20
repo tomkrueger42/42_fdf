@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/20 17:17:33 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/20 22:29:26 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 # define STD_COLOR 0xFFFFFF
 # define MAX_COLOR 0xFF8800
-# define MHGHT 50
+# define MHGHT 20
 
 /* define the y-warp of the drawn map */
 
@@ -58,7 +58,7 @@ typedef struct	s_fdf
 	int		width;
 	int		max_height;
 	int		height_multiple;
-	double	px_dist;
+	int		px_dist;
 	int		win_x;
 	int		win_y;
 	t_vars	vars;
@@ -77,7 +77,6 @@ typedef struct	s_px
 /* fdf.c */
 
 int		main(int argc, char **argv);
-void 	set_fdf(t_fdf *fdf, t_list *map);
 
 /* map.c */
 
@@ -88,18 +87,11 @@ void	print_map(t_fdf *fdf, t_list *map);
 /* image.c */
 
 void	draw_wireframe(t_fdf *fdf, t_list *map);
-void	set_lines(t_fdf *fdf, t_list *map, t_px *cur, int y_count);
-void	y_line(t_fdf *fdf, t_px *cur, int cur_height, int *height_color);
-void	x_line(t_fdf *fdf, t_px *cur, int cur_height, int *height_color);
-void	draw_line(t_data *img, t_px *start, t_px *end);
 
 /* colors.c */
 
-unsigned char	get_r(int trgb);
-unsigned char	get_g(int trgb);
-unsigned char	get_b(int trgb);
-unsigned int	convert_color(t_fdf *fdf, int height);
-int				set_color(t_px *start, t_px *end, size_t x_counter, size_t y_counter);
+int		convert_color(t_fdf *fdf, int height);
+int		set_color(t_px *start, t_px *end, size_t x_counter, size_t y_counter);
 
 /* utils.c */
 
