@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 22:30:50 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/19 17:13:26 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/20 17:16:25 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	draw_wireframe(t_fdf *fdf, t_list *map)
 	int		y_count;
 
 	y_count = 0;
-	origin = set_px(fdf->length * fdf->px_dist / ROTATION,
-					fdf->px_dist + map->content[0] + 10,
+	origin = set_px(fdf->length * fdf->px_dist,
+					fdf->px_dist + ft_abs(map->content[0]),
 					map->content[1]);
 	while (y_count < fdf->length)
 	{
@@ -30,7 +30,7 @@ void	draw_wireframe(t_fdf *fdf, t_list *map)
 					origin->y - cur_height,
 					map->content[1]);
 		set_lines(fdf, map, cur, y_count);
-		origin->x -= (fdf->px_dist / ROTATION);
+		origin->x -= (fdf->px_dist);
 		origin->y += fdf->px_dist * WARP / 100;
 		map = map->next;
 		y_count++;
@@ -58,7 +58,7 @@ void	set_lines(t_fdf *fdf, t_list *map, t_px *cur, int y_count)
 		}
 		x_count += 2;
 		cur->x += fdf->px_dist;
-		cur->y += (fdf->px_dist / ROTATION) * WARP / 100 + cur_height;
+		cur->y += (fdf->px_dist) * WARP / 100 + cur_height;
 		cur_height = map->content[x_count];
 		cur->y += - cur_height;
 		cur->color = map->content[x_count + 1];
@@ -71,7 +71,7 @@ void	y_line(t_fdf *fdf, t_px *cur, int cur_height, int *height_color)
 {
 	t_px	*tmp;
 
-	tmp = set_px(cur->x - (fdf->px_dist / ROTATION),
+	tmp = set_px(cur->x - (fdf->px_dist),
 			cur->y + (fdf->px_dist * WARP / 100) + cur_height - height_color[0],
 			height_color[1]);
 	if (tmp == NULL)
@@ -86,7 +86,7 @@ void	x_line(t_fdf *fdf, t_px *cur, int cur_height, int *height_color)
 	t_px	*tmp;
 
 	tmp = set_px(cur->x + fdf->px_dist,
-				cur->y + (fdf->px_dist / ROTATION * WARP / 100)
+				cur->y + (fdf->px_dist * WARP / 100)
 				+ cur_height - height_color[0],
 				height_color[1]);
 	if (tmp == NULL)

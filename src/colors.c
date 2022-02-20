@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 01:28:06 by tomkrueger        #+#    #+#             */
-/*   Updated: 2022/02/18 23:11:41 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/19 23:25:54 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ unsigned char	get_b(int trgb)
 {
 	return (trgb & 0xFF);
 }
-/* 
+
 unsigned int	convert_color(t_fdf *fdf, int height)
 {
 	double	percentage;
@@ -34,13 +34,13 @@ unsigned int	convert_color(t_fdf *fdf, int height)
 	unsigned char	g;
 	unsigned char	b;
 
-	percentage = (double)height / (double)fdf->max_height;
-	r = get_r(CBASE) - (double)get_r(CBASE ^ CMAMP) * percentage;
-	g = get_g(CBASE) - (double)get_g(CBASE ^ CMAMP) * percentage;
-	b = get_b(CBASE) - (double)get_b(CBASE ^ CMAMP) * percentage;
+	percentage = (double)ft_abs(height) / (double)MHGHT;
+	r = get_r(STD_COLOR) - (double)get_r(STD_COLOR ^ MAX_COLOR) * percentage;
+	g = get_g(STD_COLOR) - (double)get_g(STD_COLOR ^ MAX_COLOR) * percentage;
+	b = get_b(STD_COLOR) - (double)get_b(STD_COLOR ^ MAX_COLOR) * percentage;
 	return (*(int *)(unsigned char [4]){b, g, r});
 }
- */
+
 int	set_color(t_px *start, t_px *end, size_t x_counter, size_t y_counter)
 {
 	double	x;

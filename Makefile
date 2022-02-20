@@ -6,16 +6,16 @@
 #    By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/27 22:03:08 by tjensen           #+#    #+#              #
-#    Updated: 2022/02/18 12:41:25 by tomkrueger       ###   ########.fr        #
+#    Updated: 2022/02/20 16:43:35 by tomkrueger       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	fdf
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -g # -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror # -g -fsanitize=address
 INC		=	./inc/fdf.h
 SRC_PATH =	./src/
-SRCS	=	colors.c fdf.c image.c utils.c
+SRCS	=	colors.c fdf.c image.c map.c utils.c
 OBJ_PATH =	./objs/
 OBJS	=	$(patsubst %c,$(OBJ_PATH)%o,$(SRCS))
 LIBFT	=	-L./lib/libft -lft lib/libft/libft.a

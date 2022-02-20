@@ -6,12 +6,11 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 13:07:50 by tomkrueger        #+#    #+#             */
-/*   Updated: 2022/02/18 12:41:03 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/20 16:48:44 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
-
 
 t_px	*set_px(int x, int y, int color)
 {
@@ -35,22 +34,13 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-
-void	del_content(void *ptr)
+int	key_hook(int keycode, void	*mlx, void *win)
 {
-	free(ptr);
-	ptr = NULL;
-}
 
-void	free_stuff(t_fdf *fdf, t_list *map)
-{
-	// ft_lstclear(&map, &del_content);
-	while (map != NULL)
+	if (keycode == ESC_KEY)
 	{
-		free(map->content);
-		map->content = NULL;
-		map = map->next;
+		system("leaks fdf");
+		exit(0);
 	}
-	free(fdf);
-	fdf = NULL;
+	return (0);
 }
