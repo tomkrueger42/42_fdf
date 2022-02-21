@@ -6,14 +6,12 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 16:36:25 by tomkrueger        #+#    #+#             */
-/*   Updated: 2022/02/20 19:58:08 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/21 01:50:33 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
-#include <fcntl.h>
-
-#include <stdio.h>
+#include <fcntl.h> // for file
 
 int	*extract_values(char **splitted);
 
@@ -89,27 +87,5 @@ void	tweak_map(t_fdf *fdf, t_list **map)
 			i++;
 		}
 		parser = parser->next;
-	}
-}
-
-void	print_map(t_fdf *fdf, t_list *map)
-{
-	int	i;
-	int	c = 0;
-
-	if (map == NULL)
-		return ;
-	while (map != NULL)
-	{
-		i = 0;
-		while (i < fdf->width)
-		{
-			printf(" %i,", map->content[i]);
-			i++;
-			printf("%x", map->content[i]);
-			i++;
-		}
-		printf("\n");
-		map = map->next;
 	}
 }

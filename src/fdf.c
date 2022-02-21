@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:22:15 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/20 22:37:00 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/21 01:49:28 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 
 	map = NULL;
 	if (argc != 2)
-		return (ft_putstr_fd("./fdf <filename of properly formatted map>\n", 2));
+		return (ft_putstr_fd("./fdf <filename of formatted map>\n", 2));
 	fdf = ft_calloc(1, sizeof(struct s_fdf));
 	if (fdf == NULL)
 		return (0);
@@ -30,10 +30,9 @@ int	main(int argc, char **argv)
 		return (0);
 	set_fdf(fdf, map);
 	tweak_map(fdf, &map);
-	// print_map(fdf, map);
 	fdf->vars.mlx = mlx_init();
 	fdf->vars.win = mlx_new_window(fdf->vars.mlx, WIN_X, WIN_Y, "fdf");
-	fdf->img.img = mlx_new_image(fdf->vars.mlx, WIN_X * 2, WIN_Y * 2);
+	fdf->img.img = mlx_new_image(fdf->vars.mlx, WIN_X * 5, WIN_Y * 5);
 	fdf->img.addr = mlx_get_data_addr(fdf->img.img, &fdf->img.bits_per_pixel,
 									&fdf->img.line_length, &fdf->img.endian);
 	draw_wireframe(fdf, map);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   image.c                                            :+:      :+:    :+:   */
+/*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 22:30:50 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/20 23:10:25 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/21 01:54:17 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ void	draw_wireframe(t_fdf *fdf, t_list *map)
 	int		y_count;
 
 	y_count = 0;
-	origin = set_px(fdf->px_dist,
-					fdf->width / 2 * fdf->px_dist * WARP / 100 + ft_abs(map->content[fdf->width - 2]),
-					map->content[1]);
+	origin = set_px((WIN_X - (fdf->width / 2 + fdf->length - 2) *
+					fdf->px_dist) / 2,
+					(WIN_Y - (fdf->width / 2 + fdf->length) * fdf->px_dist *
+					WARP / 100) / 2 + fdf->width / 2 * fdf->px_dist * WARP /
+					100, map->content[1]);
 	while (y_count < fdf->length)
 	{
 		cur_height = map->content[0];

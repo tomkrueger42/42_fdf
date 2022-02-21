@@ -6,7 +6,7 @@
 /*   By: tomkrueger <tomkrueger@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/09 17:12:23 by tkruger           #+#    #+#             */
-/*   Updated: 2022/02/20 22:29:26 by tomkrueger       ###   ########.fr       */
+/*   Updated: 2022/02/21 02:01:53 by tomkrueger       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@
 /* void color and maximum height */
 
 # define STD_COLOR 0xFFFFFF
-# define MAX_COLOR 0xFF8800
-# define MHGHT 20
+# define MAX_COLOR 0x0
+# define MHGHT 50
 
-/* define the y-warp of the drawn map */
+/* define the viewing angle of the drawn map */
 
 # define WARP 70
 
@@ -57,10 +57,7 @@ typedef struct	s_fdf
 	int		length;
 	int		width;
 	int		max_height;
-	int		height_multiple;
 	int		px_dist;
-	int		win_x;
-	int		win_y;
 	t_vars	vars;
 	t_data	img;
 }	t_fdf;
@@ -82,9 +79,8 @@ int		main(int argc, char **argv);
 
 t_list	*make_map(t_fdf *fdf, t_list **map, char *file);
 void	tweak_map(t_fdf *fdf, t_list **map);
-void	print_map(t_fdf *fdf, t_list *map);
 
-/* image.c */
+/* draw.c */
 
 void	draw_wireframe(t_fdf *fdf, t_list *map);
 
